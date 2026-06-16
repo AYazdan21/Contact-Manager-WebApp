@@ -173,6 +173,12 @@ Ensure you have the following installed on your machine:
 
 ---
 
+## 🌐 Deployment
+
+For step-by-step instructions on deploying the application to a production Debian server using Nginx, systemd, and Let's Encrypt SSL, check out the [Debian Server Deployment Guide](deployment/README.md).
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

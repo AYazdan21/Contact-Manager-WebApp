@@ -1,0 +1,17 @@
+[Unit]
+Description=Contact Manager FastAPI Backend
+After=network.target
+
+[Service]
+# We run as the www-data user/group for security.
+# Note: Ensure the application files are owned by www-data (chown -R www-data:www-data /var/www/contact-manager)
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/contact-manager/backend
+Environment="PATH=/var/www/contact-manager/backend/env1/bin"
+ExecStart=/var/www/contact-manager/backend/env1/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
