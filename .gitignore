@@ -1,0 +1,42 @@
+# Virtual environment
+env1/
+venv/
+.venv/
+env/
+
+# Python caching & bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Local databases
+backend/database.db
+database.db
+
+# Sensitive credentials & environment files
+.env
+backend/.env
+.env.local
+.env.*.local
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Frontend build outputs and node_modules
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+logs
+*.log

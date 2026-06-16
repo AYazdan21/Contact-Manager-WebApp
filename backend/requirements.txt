@@ -1,0 +1,6 @@
+fastapi>=0.100.0
+uvicorn>=0.22.0
+sqlmodel>=0.0.8
+bcrypt>=4.0.1
+pyjwt>=2.8.0
+python-dotenv>=1.0.0
