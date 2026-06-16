@@ -1,5 +1,7 @@
 # 📞 Contact Manager WebApp
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A modern, responsive, and secure full-stack contact management application. It features user registration and login, JWT-based authentication, category grouping, advanced contact search and filtering, and privacy compliance rules.
 
 ---
@@ -168,3 +170,9 @@ Ensure you have the following installed on your machine:
 *   **Country Restriction**: The server checks the starting digits of the phone number when creating or updating a contact:
     *   If it matches `+1` (USA) or `+850` (North Korea), the API responds with a `403 Forbidden` status code, preventing registration to comply with local privacy rules.
 *   **Phone Validation**: All phone inputs must match international standards `^\+?[1-9]\d{1,14}$`.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
