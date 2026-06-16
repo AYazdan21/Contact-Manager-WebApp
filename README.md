@@ -14,7 +14,7 @@ A modern, responsive, and secure full-stack contact management application. It f
 *   **⭐️ Favorites System**: Quickly bookmark/favorite contacts and access them via a dedicated filter.
 *   **🌍 Privacy Compliance & Validation**:
     *   Ensures all phone numbers use valid international formats (e.g., `+98...`).
-    *   Strict region blocking: Automatically denies registration of contacts from unsupported regions (e.g., USA `+1`, North Korea `+850`) in compliance with system privacy policies.
+    *   Strict region blocking: Automatically denies registration of contacts from unsupported regions (e.g. North Korea `+850`) in compliance with system privacy policies.
 
 ---
 

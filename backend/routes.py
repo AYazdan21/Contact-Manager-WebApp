@@ -20,7 +20,6 @@ from zoneinfo import ZoneInfo
 router = APIRouter()
 
 UNSUPPORTED_REGIONS = [
-    {"code": "+1", "country": "USA"},
     {"code": "+850", "country": "North Korea"},
 ]
 
