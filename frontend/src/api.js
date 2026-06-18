@@ -53,7 +53,18 @@ export const api = {
       }
 
       if (!response.ok) {
-        const errorMessage = data?.detail || data?.message || 'An error occurred';
+        let errorMessage = 'An error occurred';
+        if (data?.detail) {
+          if (Array.isArray(data.detail)) {
+            errorMessage = data.detail.map(err => err.msg).join(', ');
+          } else if (typeof data.detail === 'string') {
+            errorMessage = data.detail;
+          } else {
+            errorMessage = JSON.stringify(data.detail);
+          }
+        } else if (data?.message) {
+          errorMessage = data.message;
+        }
         throw new Error(errorMessage);
       }
 

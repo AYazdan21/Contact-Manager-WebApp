@@ -2,6 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { api } from './api';
 import './App.css';
 
+const COUNTRIES = [
+  { name: 'Iran', code: '+98', flag: '🇮🇷', placeholder: '912 345 6789' },
+  { name: 'Turkey', code: '+90', flag: '🇹🇷', placeholder: '505 123 4567' },
+  { name: 'United Kingdom', code: '+44', flag: '🇬🇧', placeholder: '7123 456789' },
+  { name: 'Germany', code: '+49', flag: '🇩🇪', placeholder: '151 2345 6789' },
+  { name: 'France', code: '+33', flag: '🇫🇷', placeholder: '6 1234 5678' },
+  { name: 'Iraq', code: '+964', flag: '🇮🇶', placeholder: '770 123 4567' },
+  { name: 'United Arab Emirates', code: '+971', flag: '🇦🇪', placeholder: '50 123 4567' },
+  { name: 'Other', code: '+', flag: '🌐', placeholder: 'Country code and phone number' }
+];
+
 function App() {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState(api.isAuthenticated());
@@ -30,6 +41,8 @@ function App() {
   const [successMessage, setSuccessMessage] = useState(null);
   const [showContactModal, setShowContactModal] = useState(false);
   const [editingContact, setEditingContact] = useState(null);
+  const [selectedCountryCode, setSelectedCountryCode] = useState('+98');
+  const [localPhone, setLocalPhone] = useState('');
 
   // Form State
   const [contactForm, setContactForm] = useState({
@@ -142,6 +155,8 @@ function App() {
       city: '',
       category_id: ''
     });
+    setSelectedCountryCode('+98');
+    setLocalPhone('');
     setError(null);
     setShowContactModal(true);
   };
@@ -155,6 +170,24 @@ function App() {
       city: contact.city,
       category_id: contact.category_id || ''
     });
+    
+    // Parse contact.phone (e.g. "+989121191626") into country code and local number
+    const matchedCountry = COUNTRIES
+      .filter(c => c.code !== '+')
+      .sort((a, b) => b.code.length - a.code.length)
+      .find(c => contact.phone.startsWith(c.code));
+      
+    if (matchedCountry) {
+      setSelectedCountryCode(matchedCountry.code);
+      setLocalPhone(contact.phone.slice(matchedCountry.code.length));
+    } else if (contact.phone.startsWith('+')) {
+      setSelectedCountryCode('+');
+      setLocalPhone(contact.phone.slice(1));
+    } else {
+      setSelectedCountryCode('+98');
+      setLocalPhone(contact.phone);
+    }
+    
     setError(null);
     setShowContactModal(true);
   };
@@ -165,14 +198,27 @@ function App() {
     setSuccessMessage(null);
 
     // Validation
-    if (!contactForm.name || !contactForm.phone || !contactForm.email || !contactForm.city) {
+    if (!contactForm.name || !localPhone || !contactForm.email || !contactForm.city) {
       setError('Please fill in all required fields.');
+      return;
+    }
+
+    let cleanLocalPhone = localPhone.trim().replace(/\s+/g, '');
+    // Strip leading zero if a specific country code is selected (not generic '+')
+    if (selectedCountryCode !== '+' && cleanLocalPhone.startsWith('0')) {
+      cleanLocalPhone = cleanLocalPhone.slice(1);
+    }
+    
+    const fullPhone = selectedCountryCode + cleanLocalPhone;
+
+    if (selectedCountryCode === '+' && !fullPhone.startsWith('+')) {
+      setError('Phone number must start with a + followed by the country code.');
       return;
     }
 
     const payload = {
       name: contactForm.name,
-      phone: contactForm.phone,
+      phone: fullPhone,
       email: contactForm.email,
       city: contactForm.city,
       category_id: contactForm.category_id ? parseInt(contactForm.category_id) : null
@@ -544,13 +590,29 @@ function App() {
               </div>
 
               <div className="form-group">
-                <label>Phone Number * (International format, e.g. +98...)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. +989123456789"
-                  value={contactForm.phone}
-                  onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                />
+                <label>Phone Number *</label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <select
+                    value={selectedCountryCode}
+                    onChange={(e) => setSelectedCountryCode(e.target.value)}
+                    style={{ width: '160px', flexShrink: 0 }}
+                  >
+                    {COUNTRIES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.name} ({c.code})
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    placeholder={
+                      COUNTRIES.find(c => c.code === selectedCountryCode)?.placeholder || 'Enter number'
+                    }
+                    value={localPhone}
+                    onChange={(e) => setLocalPhone(e.target.value)}
+                    style={{ flexGrow: 1 }}
+                  />
+                </div>
               </div>
 
               <div className="form-group">

@@ -31,7 +31,7 @@ backend/.env
 *.sln
 *.sw?
 .DS_Store
-
+project.zip
 # Frontend build outputs and node_modules
 node_modules/
 frontend/node_modules/
